@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Moedas</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Conversor de Moedas</h1>
+        <div class="conversor-box">
+            <div class="grupo-linha">
+                <label for="valor-base">Valor</label>
+                <input type="number" id="valor-base" value="1" min="0">
+                <select id="moeda-base"></select>
+            </div>
+            
+            <div class="icone-troca">⇄</div>
+
+            <div class="grupo-linha">
+                 <label for="moeda-destino">Convertido para</label>
+                 <input type="text" id="valor-destino" readonly>
+                <select id="moeda-destino"></select>
+            </div>
+        </div>
+        <button id="btn-converter">Converter</button>
+        <div id="info-taxa">
+            </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
