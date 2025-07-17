@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        infoTaxaDiv.textContent = 'Buscando...';
+        infoTaxaDiv.textContent = 'Buscando cotação...';
         valorDestinoInput.value = '...';
 
         try {
@@ -52,7 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const valorFinal = valor * taxa;
 
-            valorDestinoInput.value = valorFinal.toLocaleString('pt-BR', { style: 'currency', currency: destino });
+            valorDestinoInput.value = valorFinal.toLocaleString('pt-BR', { 
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 6
+            });
 
             infoTaxaDiv.textContent = `Taxa: 1 ${base} = ${taxa.toFixed(6)} ${destino}`;
 
@@ -63,4 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     btnConverter.addEventListener('click', converterMoeda);
+    
+    valorBaseInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            converterMoeda();
+        }
+    });
 });

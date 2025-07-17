@@ -9,24 +9,30 @@
 <body>
     <div class="container">
         <h1>Conversor de Moedas</h1>
-        <div class="conversor-box">
-            <div class="grupo-linha">
-                <label for="valor-base">Valor</label>
-                <input type="number" id="valor-base" value="1" min="0">
-                <select id="moeda-base"></select>
+        
+        <div class="conversor-container">
+            <div class="grupo-moeda">
+                <label for="valor-base">De</label>
+                <div class="input-group">
+                    <input type="number" id="valor-base" value="1" min="0" placeholder="0.00">
+                    <select id="moeda-base"></select>
+                </div>
             </div>
             
             <div class="icone-troca">⇄</div>
 
-            <div class="grupo-linha">
-                 <label for="moeda-destino">Convertido para</label>
-                 <input type="text" id="valor-destino" readonly>
-                <select id="moeda-destino"></select>
+            <div class="grupo-moeda">
+                <label for="valor-destino">Para</label>
+                <div class="input-group">
+                    <input type="text" id="valor-destino" readonly placeholder="0.00">
+                    <select id="moeda-destino"></select>
+                </div>
             </div>
         </div>
+        
         <button id="btn-converter">Converter</button>
-        <div id="info-taxa">
-            </div>
+        
+        <div id="info-taxa"></div>
     </div>
 
     <script src="js/script.js"></script>
