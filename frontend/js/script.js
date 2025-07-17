@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 maximumFractionDigits: 6
             });
 
-            infoTaxaDiv.textContent = `Taxa: 1 ${base} = ${taxa.toFixed(6)} ${destino}`;
+            infoTaxaDiv.textContent = `1 ${base} = ${taxa.toFixed(6)} ${destino}`;
 
         } catch (error) {
             infoTaxaDiv.textContent = `Erro: ${error.message}`;

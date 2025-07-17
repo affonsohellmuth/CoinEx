@@ -6,8 +6,9 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    height: 100%;
     margin: 0;
-    padding: 20px;
+    padding: 80px;
     box-sizing: border-box;
 }
 
@@ -24,9 +25,28 @@ h1 {
     font-size: 2.5rem;
 }
 
+header {
+    background-color: #000000;
+    color: #f0db23;
+    padding: 12px 0;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.header-container h1 {
+    margin: 0;
+    font-size: 2em;
+    color: #f0db23;
+    text-shadow: 1px 1px 2px #000;
+}
+
 .conversor-container {
     display: flex;
-    gap: 30px;
     align-items: center;
     justify-content: center;
     margin-bottom: 40px;
@@ -34,7 +54,6 @@ h1 {
 }
 
 .grupo-moeda {
-    flex: 1;
     min-width: 300px;
     max-width: 350px;
 }
@@ -43,7 +62,7 @@ h1 {
     display: block;
     text-align: left;
     font-size: 16px;
-    color: #b0b0b0;
+    color: #cccccc;
     margin-bottom: 8px;
     font-weight: 500;
 }
@@ -53,7 +72,8 @@ h1 {
     gap: 10px;
 }
 
-input[type="number"], input[type="text"] {
+input[type="number"],
+input[type="text"] {
     flex: 2;
     padding: 16px;
     border: 2px solid #333333;
@@ -65,9 +85,10 @@ input[type="number"], input[type="text"] {
     transition: border-color 0.3s ease;
 }
 
-input[type="number"]:focus, input[type="text"]:focus {
+input[type="number"]:focus,
+input[type="text"]:focus {
     outline: none;
-    border-color: #007bff;
+    border-color: #f0db23;
 }
 
 input[type="text"][readonly] {
@@ -90,11 +111,11 @@ select {
 
 select:focus {
     outline: none;
-    border-color: #007bff;
+    border-color: #f0db23;
 }
 
 .icone-troca {
-    color: #007bff;
+    color: #f0db23;
     font-size: 32px;
     font-weight: bold;
     margin: 0 20px;
@@ -102,14 +123,16 @@ select:focus {
     align-items: center;
     justify-content: center;
     min-width: 50px;
+    margin-top: 1.5rem;
+    margin-left: 1.8rem;
 }
 
 button {
     width: 100%;
     max-width: 400px;
     padding: 18px;
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
+    background: #f0db23;
+    color: #000;
     border: none;
     border-radius: 8px;
     font-size: 18px;
@@ -120,9 +143,9 @@ button {
 }
 
 button:hover {
-    background: linear-gradient(135deg, #0056b3, #004494);
+    background: #e6c800;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 221, 0, 0.3);
 }
 
 button:active {
@@ -137,6 +160,49 @@ button:active {
     border-radius: 6px;
     background-color: #1e1e1e;
     border: 1px solid #333333;
+}
+
+.tabela-moeda table {
+    flex: 1;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tabela-moeda th,
+.tabela-moeda td {
+    padding: 12px;
+    border: 1px solid #333;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+.tabela-moeda thead {
+    background-color: #f0db23;
+    color: #000;
+    font-weight: bold;
+}
+
+.tabela-moeda tr:hover {
+    background-color: #2a2a2a;
+}
+
+footer {
+    background-color: #000000;
+    color: #f0db23;
+    bottom: 0;
+    left: 0;
+    padding: 12px 0;
+    position: fixed;
+    width: 100%;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.4);
+    display: block;
+}
+
+.footer-container p {
+    margin: 0;
+    font-size: 0.95em;
+    color: #f0db23;
 }
 
 @media (max-width: 768px) {
