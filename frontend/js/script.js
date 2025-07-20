@@ -8,21 +8,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnConverter = document.getElementById('btn-converter');
     const infoTaxaDiv = document.getElementById('info-taxa');
 
-    const supportedCurrencies = [
+    const fiatCurrencies = [
         "AUD", "BGN", "BRL", "CAD", "CHF", "CNY", "CZK", "DKK", "EUR", "GBP",
         "HKD", "HUF", "IDR", "ILS", "INR", "ISK", "JPY", "KRW", "MXN", "MYR",
         "NOK", "NZD", "PHP", "PLN", "RON", "SEK", "SGD", "THB", "TRY", "USD", "ZAR"
     ];
 
-    supportedCurrencies.forEach(currency => {
-        const optionBase = new Option(currency, currency);
-        const optionDestino = new Option(currency, currency);
-        moedaBaseSelect.appendChild(optionBase);
-        moedaDestinoSelect.appendChild(optionDestino);
-    });
+    const cryptoCurrencies = [
+        "BTC", "ETH", "XRP", "LTC", "BCH", "ADA", "DOT", "LINK", "BNB", "XLM", "USDT", "DOGE"
+    ]
 
-    moedaBaseSelect.value = "USD";
-    moedaDestinoSelect.value = "BRL";
+    const popularMoedas = () => {
+        moedaBaseSelect.innerHTML = '';
+        moedaDestinoSelect.innerHTML = '';
+
+        const cryptoGroupBase = document.createElement('optgroup');
+        cryptoGroupBase.label = 'Criptomoedas';
+        const cryptoGroupDest = document.createElement('optgroup');
+        cryptoGroupDest.label = 'Criptomoedas';
+
+        cryptoCurrencies.forEach(c => {
+            cryptoGroupBase.appendChild(new Option(c, c));
+            cryptoGroupDest.appendChild(new Option(c, c));
+        });
+
+        moedaBaseSelect.appendChild(cryptoGroupBase);
+        moedaDestinoSelect.appendChild(cryptoGroupDest);
+
+        // Adiciona Moedas Fiduciárias
+        const fiatGroupBase = document.createElement('optgroup');
+        fiatGroupBase.label = 'Moedas Fiduciárias';
+        const fiatGroupDest = document.createElement('optgroup');
+        fiatGroupDest.label = 'Moedas Fiduciárias';
+        
+        fiatCurrencies.forEach(c => {
+            fiatGroupBase.appendChild(new Option(c, c));
+            fiatGroupDest.appendChild(new Option(c, c));
+        });
+
+        moedaBaseSelect.appendChild(fiatGroupBase);
+        moedaDestinoSelect.appendChild(fiatGroupDest);
+    };
+
+    popularMoedas();
+
+    moedaBaseSelect.value = "BTC";
+    moedaDestinoSelect.value = "USD";
 
     const converterMoeda = async () => {
         const valor = parseFloat(valorBaseInput.value);
@@ -38,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        infoTaxaDiv.textContent = 'Buscando cotação...';
+        infoTaxaDiv.textContent = `Buscando cotação de ${base} para ${destino}...`;
         valorDestinoInput.value = '...';
 
         try {
@@ -52,12 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const valorFinal = valor * taxa;
 
-            valorDestinoInput.value = valorFinal.toLocaleString('pt-BR', { 
+            const isDestinoCrypto = cryptoCurrencies.includes(destino);
+            const options = {
                 minimumFractionDigits: 2,
-                maximumFractionDigits: 6
-            });
+                maximumFractionDigits: isDestinoCrypto ? 8 : 2
+            };
+            valorDestinoInput.value = valorFinal.toLocaleString('pt-BR', options);
 
-            infoTaxaDiv.textContent = `1 ${base} = ${taxa.toFixed(6)} ${destino}`;
+            infoTaxaDiv.textContent = `Taxa: 1 ${base} = ${taxa.toFixed(8)} ${destino}`;
 
         } catch (error) {
             infoTaxaDiv.textContent = `Erro: ${error.message}`;
