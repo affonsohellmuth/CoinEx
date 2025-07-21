@@ -6,7 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const moedaDestinoSelect = document.getElementById('moeda-destino');
     const btnConverter = document.getElementById('btn-converter');
     const infoTaxaDiv = document.getElementById('info-taxa');
-    const tabelaTbody = document.getElementById('tabela-tbody'); 
+    const tabelaTbody = document.getElementById('tabela-tbody');
+    const dataInicioInput = document.getElementById('data-inicio');
+    const dataFimInput = document.getElementById('data-fim');
+    const graficoCanvas = document.getElementById('grafico-historico');
+    const infoHistoricoDiv = document.getElementById('info-historico');
+    let historicoChart;
 
     const moedas = [
         { codigo: "BTC", nome: "Bitcoin", tipo: "Criptomoeda" },
@@ -127,13 +132,89 @@ document.addEventListener('DOMContentLoaded', () => {
             valorDestinoInput.value = '';
         }
     };
+    const buscarHistorico = async () => {
+        const base = moedaBaseSelect.value;
+        const destino = moedaDestinoSelect.value;
+        const dataInicio = dataInicioInput.value;
+        const dataFim = dataFimInput.value;
 
-    popularSelects(); 
-    popularTabela(); 
-    btnConverter.addEventListener('click', converterMoeda);
-    valorBaseInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            converterMoeda();
+        if (!fiatCurrencies.includes(base) || !fiatCurrencies.includes(destino)) {
+            infoHistoricoDiv.textContent = "Histórico disponível apenas para moedas fiduciárias.";
+            return;
         }
-    });
+        if (!dataInicio || !dataFim) {
+            infoHistoricoDiv.textContent = "Por favor, selecione data de início e fim.";
+            return;
+        }
+
+        infoHistoricoDiv.textContent = "Buscando histórico...";
+
+        try {
+            const url = `${API_URL}/historico/${base}/${destino}?data_inicio=${dataInicio}&data_fim=${dataFim}`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Não foi possível buscar o histórico.');
+            }
+            const data = await response.json();
+
+            if (data.length === 0) {
+                infoHistoricoDiv.textContent = "Nenhum dado encontrado para o período selecionado.";
+                return;
+            }
+
+            const labels = data.map(ponto => ponto.data);
+            const valores = data.map(ponto => ponto.valor);
+
+            desenharGrafico(labels, valores, `${base} / ${destino}`);
+            infoHistoricoDiv.textContent = `Exibindo histórico de ${base} para ${destino}.`;
+
+        } catch (error) {
+            infoHistoricoDiv.textContent = `Erro: ${error.message}`;
+        }
+    };
+    const desenharGrafico = (labels, data, label) => {
+        if (historicoChart) {
+            historicoChart.destroy(); // Destrói o gráfico anterior para criar um novo
+        }
+        historicoChart = new Chart(graficoCanvas, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: label,
+                    data: data,
+                    borderColor: '#f0db23',
+                    backgroundColor: 'rgba(240, 219, 35, 0.2)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { labels: { color: '#e0e0e0' } } },
+                scales: {
+                    x: { ticks: { color: '#b0b0b0' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+                    y: { ticks: { color: '#b0b0b0' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } }
+                }
+            }
+        });
+    };
+
+    const init = () => {
+        popularSelects();
+        popularTabela();
+
+        const hoje = new Date();
+        const trintaDiasAtras = new Date();
+        trintaDiasAtras.setDate(hoje.getDate() - 30);
+        dataFimInput.value = hoje.toISOString().split('T')[0];
+        dataInicioInput.value = trintaDiasAtras.toISOString().split('T')[0];
+
+        btnConverter.addEventListener('click', converterMoeda);
+        btnConverter.addEventListener('click', buscarHistorico);
+        valorBaseInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') converterMoeda(); });
+    };
+
+    init();
 });

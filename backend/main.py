@@ -1,9 +1,11 @@
 import os
 import requests
 import time
-from fastapi import FastAPI, HTTPException, Path
+import pandas as pd
+from fastapi import FastAPI, HTTPException, Path, Query
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, date
+from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
@@ -43,6 +45,10 @@ class CotacaoResponse(BaseModel):
     valor_convertido: float
     fonte: str
     ultima_atualizacao_utc: datetime
+
+class HistoricoDataPoint(BaseModel):
+    data: date
+    valor: float
 
 @app.get("/cotacao/{moeda_base}/{moeda_destino}", response_model=CotacaoResponse)
 def obter_cotacao_unificada(
@@ -125,6 +131,43 @@ def obter_cotacao_unificada(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ocorreu um erro inesperado: {str(e)}")
 
+@app.get("/historico/{moeda_base}/{moeda_destino}", response_model=List[HistoricoDataPoint])
+def get_historico_moeda(
+        moeda_base: str,
+        moeda_destino: str,
+        data_inicio: date = Query(..., description="Data de início no formato AAAA-MM-DD"),
+        data_fim: date = Query(..., description="Data de fim no formato AAAA-MM-DD")
+):
+    base = moeda_base.upper()
+    destino = moeda_destino.upper()
+
+    if base not in SUPPORTED_FIAT or destino not in SUPPORTED_FIAT:
+        raise HTTPException(status_code=400,
+                            detail=f"Histórico está disponível apenas para moedas fiduciárias. Moeda inválida: {base} ou {destino}")
+
+    url = f"{FIAT_API_URL}/{data_inicio}..{data_fim}?from={base}&to={destino}"
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+
+        rates = data.get("rates", {})
+        if not rates:
+            return []
+
+        resultado = [
+            {"data": dia, "valor": valores.get(destino)}
+            for dia, valores in sorted(rates.items())
+        ]
+
+        return resultado
+
+    except requests.RequestException as e:
+        raise HTTPException(status_code=503, detail=f"Erro ao buscar dados da API de histórico: {e}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao processar dados históricos: {str(e)}")
+
 @app.get("/")
 def health_check():
-    return {"status": "ok", "version": "2.1.0"}
+    return {"status": "ok", "version": "3.0.0"}

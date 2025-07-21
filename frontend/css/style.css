@@ -2,19 +2,27 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: #121212;
     color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    /* REINTRODUZIDO: Flexbox para centralizar o conteúdo da página */
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* 'flex-start' para alinhar ao topo, não ao centro vertical */
     min-height: 100vh;
-    height: 100%;
-    margin: 0;
-    padding: 80px;
-    box-sizing: border-box;
+}
+
+.wrapper {
+    width: 100%;
+    /* O wrapper agora só precisa de controlar o espaçamento para o header/footer fixos */
+    padding-top: 80px;
+    padding-bottom: 80px;
 }
 
 .container {
     width: 100%;
-    max-width: 800px;
+    max-width: 1400px;
+    margin: 0 auto; /* Essencial para centralizar o container dentro do seu pai */
     text-align: center;
 }
 
@@ -55,7 +63,7 @@ header {
 
 .grupo-moeda {
     min-width: 300px;
-    max-width: 350px;
+    flex-grow: 1; /* Permite que o grupo cresça */
 }
 
 .grupo-moeda label {
@@ -68,13 +76,14 @@ header {
 }
 
 .input-group {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 120px; /* Input flexível, select com largura fixa */
     gap: 10px;
 }
 
 input[type="number"],
 input[type="text"] {
-    flex: 2;
+    width: 100%;
     padding: 16px;
     border: 2px solid #333333;
     border-radius: 8px;
@@ -98,8 +107,8 @@ input[type="text"][readonly] {
 }
 
 select {
-    flex: 1;
-    padding: 16px;
+    /* As propriedades de flex não são mais necessárias aqui */
+    padding: 16px 10px; /* Ajustado o padding */
     border: 2px solid #333333;
     border-radius: 8px;
     font-size: 16px;
@@ -112,19 +121,6 @@ select {
 select:focus {
     outline: none;
     border-color: #f0db23;
-}
-
-.icone-troca {
-    color: #f0db23;
-    font-size: 32px;
-    font-weight: bold;
-    margin: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 50px;
-    margin-top: 1.5rem;
-    margin-left: 1.8rem;
 }
 
 button {
@@ -187,6 +183,68 @@ button:active {
     background-color: #2a2a2a;
 }
 
+.historico-container {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid #333;
+}
+
+.historico-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.historico-controles {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.input-group-data {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.input-group-data label {
+    font-size: 14px;
+    color: #cccccc;
+    margin-bottom: 5px;
+}
+
+.input-group-data input[type="date"] {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 2px solid #333333;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: inherit;
+}
+
+#btn-buscar-historico {
+    padding: 14px 20px;
+    max-width: 200px;
+    margin-bottom: 0; /* Alinha com a base dos inputs */
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 30px auto;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+}
+
+#info-historico {
+    margin-top: 15px;
+    color: #b0b0b0;
+    min-height: 20px;
+}
+
 footer {
     background-color: #000000;
     color: #f0db23;
@@ -205,17 +263,47 @@ footer {
     color: #f0db23;
 }
 
+.layout-principal {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    margin-bottom: 60px;
+}
+
+.coluna-conversor {
+    flex: 1; /* O conversor ocupará 1 parte do espaço */
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #333;
+}
+
+.coluna-historico {
+    flex: 2; /* O gráfico ocupará 2 partes do espaço (o dobro do conversor) */
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #333;
+}
+
+.coluna-historico h2 {
+    margin-top: 0;
+}
+
+@media (max-width: 1200px) {
+    .layout-principal {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
 @media (max-width: 768px) {
     .conversor-container {
         flex-direction: column;
         gap: 20px;
     }
     
-    .icone-troca {
-        transform: rotate(90deg);
-        margin: 10px 0;
-    }
-    
+
     h1 {
         font-size: 2rem;
     }
