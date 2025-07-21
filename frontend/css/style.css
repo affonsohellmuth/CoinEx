@@ -247,7 +247,6 @@ button:active {
 
 footer {
     background-color: #000000;
-    color: #f0db23;
     bottom: 0;
     left: 0;
     padding: 12px 0;
@@ -260,7 +259,13 @@ footer {
 .footer-container p {
     margin: 0;
     font-size: 0.95em;
+    color: #ffffff;
+}
+
+a:-webkit-any-link {
     color: #f0db23;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .layout-principal {
@@ -288,6 +293,20 @@ footer {
 
 .coluna-historico h2 {
     margin-top: 0;
+}
+
+.creditos {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  gap: 40px;               
+  padding: 20px;
+  flex-wrap: wrap;         
+  text-align: center;      
+}
+
+.crypto-ref h2 {
+    margin-bottom: 40px;
 }
 
 @media (max-width: 1200px) {
