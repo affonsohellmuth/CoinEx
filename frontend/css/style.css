@@ -5,16 +5,14 @@ body {
     margin: 0;
     padding: 20px;
     box-sizing: border-box;
-    /* REINTRODUZIDO: Flexbox para centralizar o conteúdo da página */
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* 'flex-start' para alinhar ao topo, não ao centro vertical */
+    align-items: flex-start; 
     min-height: 100vh;
 }
 
 .wrapper {
     width: 100%;
-    /* O wrapper agora só precisa de controlar o espaçamento para o header/footer fixos */
     padding-top: 80px;
     padding-bottom: 80px;
 }
@@ -22,7 +20,7 @@ body {
 .container {
     width: 100%;
     max-width: 1400px;
-    margin: 0 auto; /* Essencial para centralizar o container dentro do seu pai */
+    margin: 0 auto; 
     text-align: center;
 }
 
@@ -63,7 +61,7 @@ header {
 
 .grupo-moeda {
     min-width: 300px;
-    flex-grow: 1; /* Permite que o grupo cresça */
+    flex-grow: 1; 
 }
 
 .grupo-moeda label {
@@ -77,7 +75,7 @@ header {
 
 .input-group {
     display: grid;
-    grid-template-columns: 1fr 120px; /* Input flexível, select com largura fixa */
+    grid-template-columns: 1fr 120px;
     gap: 10px;
 }
 
@@ -107,8 +105,7 @@ input[type="text"][readonly] {
 }
 
 select {
-    /* As propriedades de flex não são mais necessárias aqui */
-    padding: 16px 10px; /* Ajustado o padding */
+    padding: 16px 10px; 
     border: 2px solid #333333;
     border-radius: 8px;
     font-size: 16px;
@@ -227,7 +224,7 @@ button:active {
 #btn-buscar-historico {
     padding: 14px 20px;
     max-width: 200px;
-    margin-bottom: 0; /* Alinha com a base dos inputs */
+    margin-bottom: 0; 
 }
 
 .chart-container {
@@ -276,7 +273,7 @@ a:-webkit-any-link {
 }
 
 .coluna-conversor {
-    flex: 1; /* O conversor ocupará 1 parte do espaço */
+    flex: 1; 
     background-color: #1a1a1a;
     padding: 30px;
     border-radius: 10px;
@@ -284,7 +281,7 @@ a:-webkit-any-link {
 }
 
 .coluna-historico {
-    flex: 2; /* O gráfico ocupará 2 partes do espaço (o dobro do conversor) */
+    flex: 2; 
     background-color: #1a1a1a;
     padding: 30px;
     border-radius: 10px;
